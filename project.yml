@@ -1,0 +1,113 @@
+name: BeatMic
+options:
+  bundleIdPrefix: com.jacobrozell
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    DEVELOPMENT_TEAM: "7JT2JB89AV"
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    GENERATE_INFOPLIST_FILE: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+
+targets:
+  BeatMic:
+    type: application
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: Sources
+      - path: Resources/Assets.xcassets
+        buildPhase: resources
+      - path: Resources/Localizable.xcstrings
+        buildPhase: resources
+    postBuildScripts:
+      - name: Copy Metronome Fixtures
+        basedOnDependencyAnalysis: false
+        script: |
+          dest="${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fixtures"
+          mkdir -p "${dest}"
+          cp "${SRCROOT}/Resources/Fixtures/"*.wav "${dest}/" 2>/dev/null || true
+          if [ -f "${SRCROOT}/Resources/Fixtures/manifest.json" ]; then
+            cp "${SRCROOT}/Resources/Fixtures/manifest.json" "${dest}/"
+          fi
+    settings:
+      base:
+        INFOPLIST_KEY_CFBundleDisplayName: BeatMic
+        INFOPLIST_KEY_CFBundleIconName: AppIcon
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown"
+        PRODUCT_BUNDLE_IDENTIFIER: com.jacobrozell.beatmic
+        TARGETED_DEVICE_FAMILY: "1,2"
+        INFOPLIST_KEY_NSMicrophoneUsageDescription: "BeatMic listens through the microphone to estimate the tempo of nearby music."
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.music
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
+        SWIFT_EMIT_LOC_STRINGS: YES
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+
+  BeatMicTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: Tests
+    dependencies:
+      - target: BeatMic
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jacobrozell.beatmic.tests
+        GENERATE_INFOPLIST_FILE: YES
+
+  BeatMicUISmokeUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: BeatMicUITests
+    dependencies:
+      - target: BeatMic
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jacobrozell.beatmic.uitests.smoke
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: BeatMic
+
+schemes:
+  BeatMic:
+    build:
+      targets:
+        BeatMic: all
+    test:
+      targets:
+        - BeatMicTests
+        - name: BeatMicUISmokeUITests
+          parallelizable: true
+      gatherCoverageData: true
+
+  BeatMicCI:
+    build:
+      targets:
+        BeatMic: all
+    test:
+      targets:
+        - BeatMicTests
+      gatherCoverageData: true
+
+  BeatMicUISmoke:
+    build:
+      targets:
+        BeatMic: all
+    test:
+      targets:
+        - name: BeatMicUISmokeUITests
+          parallelizable: true

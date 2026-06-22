@@ -1,0 +1,13 @@
+enum A11yID {
+    static let bpmValue = "detector.bpm.value"
+    static let confidenceMeter = "detector.confidence.meter"
+    static let inputLevel = "detector.input.level"
+    static let listenToggle = "detector.listen.toggle"
+    static let settingsButton = "detector.settings.button"
+    static let micPermissionButton = "onboarding.mic.allow"
+    static let loggedTimestamp = "detector.logged.timestamp"
+    static let tempoAlternatives = "detector.tempo.alternatives"
+    static let tempoAlternativePrefix = "detector.tempo.alternative"
+    static let metronomeSelfTest = "settings.verify.metronome"
+    static let metronomeSelfTestResult = "settings.verify.metronome.result"
+}

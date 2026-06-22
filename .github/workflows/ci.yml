@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  CI_XCODE_PROJECT: BeatMic.xcodeproj
+  CI_XCODE_SCHEME: BeatMicCI
+  SIM_DESTINATION: platform=iOS Simulator,name=iPhone 17
+
+jobs:
+  lint:
+    name: SwiftLint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    container:
+      image: ghcr.io/realm/swiftlint:0.57.1
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - run: swiftlint lint --reporter github-actions-logging
+
+  build-test:
+    name: Build & Test
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd
+        with:
+          xcode-version: '26.2'
+      - run: brew install xcodegen xcbeautify
+      - run: bash Scripts/sync-metronome-fixtures.sh
+      - run: xcodegen generate
+      - name: Build for Testing
+        run: |
+          set -o pipefail
+          xcodebuild build-for-testing \
+            -project "${{ env.CI_XCODE_PROJECT }}" \
+            -scheme "${{ env.CI_XCODE_SCHEME }}" \
+            -destination "${{ env.SIM_DESTINATION }}" \
+            -derivedDataPath DerivedData \
+            CODE_SIGN_IDENTITY=- \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | xcbeautify --renderer github-actions
+      - name: Run Tests
+        run: bash Scripts/ci/run-tests.sh "${{ env.SIM_DESTINATION }}"

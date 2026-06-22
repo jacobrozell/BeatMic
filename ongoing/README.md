@@ -1,0 +1,24 @@
+# Ongoing work — BeatMic
+
+## Active
+
+| Item | Doc | Notes |
+|------|-----|-------|
+| App icon + marketing screenshots | — | Phase 16; placeholder asset catalog |
+| GitHub Pages legal URLs | — | Phase 15; `AppLinks` targets not live yet |
+| Polish backlog | [`polish-backlog.md`](polish-backlog.md) | Prioritized UX, ship, visual, trust items |
+| Sensitivity / quiet listening | 🟡 | [`docs/brainstorm-sensitivity.md`](../docs/brainstorm-sensitivity.md) — adaptive normalize shipped; dense mix spec drafted |
+| Dense mix tempo (Insomniak / Faces) | 📋 | [`specs/DenseMixTempoSpec.md`](../specs/DenseMixTempoSpec.md) — multi-band flux + BPM comb scoring |
+
+## Finished
+
+| Item | Completed |
+|------|-----------|
+| MVP detector + confidence meter | 2026-06-21 |
+| Logged reading + timestamp + tempo alternatives | 2026-06-21 |
+| Metronome fixtures + Settings verification | 2026-06-21 |
+
+## Related
+
+- [`../docs/agent-build-checklist.md`](../docs/agent-build-checklist.md) — phase status  
+- [`../FutureIdeas/backlog.md`](../FutureIdeas/backlog.md) — post-v1 ideas  

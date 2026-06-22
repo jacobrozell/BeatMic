@@ -1,0 +1,38 @@
+{
+  "description": "BeatMic metronome fixtures for analyzer verification",
+  "fixtures": [
+    {
+      "filename": "metronome-90bpm-30s.wav",
+      "expectedBPM": 90,
+      "durationSeconds": 30,
+      "sampleRateHz": 44100,
+      "source": "Scripts/generate_metronome_fixture.py",
+      "license": "Project-generated metronome clicks (CC0-equivalent)"
+    },
+    {
+      "filename": "metronome-120bpm-30s.wav",
+      "expectedBPM": 120,
+      "durationSeconds": 30,
+      "sampleRateHz": 44100,
+      "source": "Scripts/generate_metronome_fixture.py",
+      "license": "Project-generated metronome clicks (CC0-equivalent)"
+    },
+    {
+      "filename": "metronome-128bpm-30s.wav",
+      "expectedBPM": 128,
+      "durationSeconds": 30,
+      "sampleRateHz": 44100,
+      "source": "Scripts/generate_metronome_fixture.py",
+      "license": "Project-generated metronome clicks (CC0-equivalent)"
+    },
+    {
+      "filename": "metronome-bigsoundbank-120bpm-12s.wav",
+      "expectedBPM": 120,
+      "durationSeconds": 12,
+      "sampleRateHz": 48000,
+      "source": "BigSoundBank sound #0468 (Joseph SARDIN)",
+      "license": "CC0 \u2014 https://bigsoundbank.com/metronome-a-120bpm-s0468.html",
+      "notes": "Recorded mechanical metronome; approximate tempo."
+    }
+  ]
+}

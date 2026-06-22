@@ -1,0 +1,28 @@
+#!/bin/sh
+# Block secrets and personal/local audio from being committed.
+
+blocked=$(
+  git diff --cached --name-only --diff-filter=ACMR |
+    grep -E '(^|/)(\.env|Secrets\.plist|GoogleService-Info\.plist|mcp\.json)$' |
+    grep -v '\.example$' ||
+    true
+)
+
+audio=$(
+  git diff --cached --name-only --diff-filter=ACMR |
+    grep -E '\.(mp3|m4a|flac|aac)$' |
+    grep -v '^Resources/Fixtures/' ||
+    true
+)
+
+if [ -n "$blocked" ]; then
+  echo "error: Refusing to commit secret or local config files:" >&2
+  echo "$blocked" | sed 's/^/  /' >&2
+  exit 1
+fi
+
+if [ -n "$audio" ]; then
+  echo "error: Refusing to commit personal/local audio (use local-test-media/ — gitignored):" >&2
+  echo "$audio" | sed 's/^/  /' >&2
+  exit 1
+fi

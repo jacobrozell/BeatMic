@@ -1,0 +1,42 @@
+# SwiftLint configuration for BeatMic.
+
+included:
+  - Sources
+  - Tests
+  - BeatMicUITests
+
+excluded:
+  - .build
+  - DerivedData
+
+disabled_rules:
+  - todo
+  - trailing_comma
+
+opt_in_rules:
+  - empty_count
+  - closure_spacing
+  - first_where
+  - contains_over_first_not_nil
+  - explicit_init
+
+line_length:
+  warning: 120
+  error: 160
+  ignores_comments: true
+
+type_body_length:
+  warning: 300
+  error: 450
+
+file_length:
+  warning: 450
+  error: 650
+
+function_body_length:
+  warning: 80
+  error: 140
+
+identifier_name:
+  min_length: 2
+  excluded: [id, a, b, x, y, t, i, j, n, ch]
