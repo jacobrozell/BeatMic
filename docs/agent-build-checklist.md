@@ -1,6 +1,6 @@
 # Agent Build Checklist — BeatMic
 
-Living status against the [generic template](../../docs/agent-build-checklist-template.md).
+Living status against the [generic template](../../workspace/agent-build-checklist-template.md).
 
 **App idea:** Hold your phone up to a record or speaker; BeatMic listens through the microphone, estimates BPM, and shows analysis confidence transparently.
 

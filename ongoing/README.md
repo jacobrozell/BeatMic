@@ -21,4 +21,4 @@
 ## Related
 
 - [`../docs/agent-build-checklist.md`](../docs/agent-build-checklist.md) — phase status  
-- [`../FutureIdeas/backlog.md`](../FutureIdeas/backlog.md) — post-v1 ideas  
+- [`../FutureIdeas/backlog.md`](../FutureIdeas/backlog.md) — post-v1 ideas (incl. SPM package → MixStack)  
