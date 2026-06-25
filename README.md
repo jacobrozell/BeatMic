@@ -2,6 +2,26 @@
 
 A minimal iOS app that listens through the microphone, estimates the tempo of nearby music, and shows how trustworthy the analysis is via a confidence meter.
 
+**Status:** v1 complete · **Bundle:** `com.jacobrozell.beatmic` · **Min iOS:** 18.0 · Pre-ship polish
+
+Product specs live in [`specs/`](specs/README.md). Shipped vs planned features: [`docs/feature-inventory.md`](docs/feature-inventory.md).
+
+---
+
+## What it does
+
+- **Live BPM detection** — real-time tempo analysis from the mic with logged readings and timestamps
+- **Half/double-time alternatives** — tap to switch when the detector locks to a related tempo
+- **Confidence meter** — visual trust indicator for the current reading
+- **Input level meter** — see when the mic is picking up signal
+- **Mic permission onboarding** — first-run explanation before capture starts
+- **Metronome self-test** — bundled WAV fixtures + in-app verification (Settings → Run metronome verification)
+- **Settings** — legal links; no accounts, analytics, or IAP in v1
+
+**Planned (post-v1):** session history, tap tempo — see feature inventory.
+
+---
+
 ## Build & run
 
 Requires **Xcode 16+** and **iOS 18+**. The Xcode project is generated from `project.yml` via [XcodeGen](https://github.com/yonaskolb/XcodeGen).
@@ -12,9 +32,11 @@ xcodegen generate
 open BeatMic.xcodeproj
 ```
 
-Select an iPhone simulator (or device) and press **⌘R**. Signing uses team `7JT2JB89AV` with bundle id `com.jacobrozell.beatmic`.
+Select an iPhone simulator (or device) and press **⌘R**. Signing uses team `7JT2JB89AV`.
 
-## Tests
+---
+
+## Tests & CI
 
 Sync metronome fixtures once (or let CI/`verify-local.sh` do it), then run tests:
 
@@ -24,18 +46,47 @@ xcodegen generate
 bash Scripts/ci/verify-local.sh
 ```
 
-Unit tests analyze bundled metronome WAVs; UI smoke tests use `-ui_test_mock_bpm 120` because the simulator mic is unreliable. In-app: **Settings → Run metronome verification**.
+| Gate | What runs |
+|------|-----------|
+| **PR CI** | SwiftLint + `BeatMicCI` unit tests on iPhone 17 simulator |
 
-## Docs
+Unit tests analyze bundled metronome WAVs. UI smoke tests use `-ui_test_mock_bpm 120` because the simulator mic is unreliable.
+
+---
+
+## Architecture
+
+| Layer | Role |
+|-------|------|
+| `Sources/Features/` | SwiftUI screens — detector, settings, onboarding |
+| `Sources/Domain/` | `BPMAnalyzer`, tempo interpretation, confidence math |
+| `Sources/Support/` | Audio session, permissions, app links |
+
+The BPM engine is pure Swift — no SwiftUI imports — so core analysis is fully unit-testable. See [`specs/ArchitectureSpec.md`](specs/ArchitectureSpec.md).
+
+---
+
+## Documentation map
 
 | Topic | Location |
 |-------|----------|
 | Agent build phases | [`docs/agent-build-checklist.md`](docs/agent-build-checklist.md) |
 | What ships today | [`docs/feature-inventory.md`](docs/feature-inventory.md) |
-| Product specs | [`specs/README.md`](specs/README.md) |
+| BPM detector spec | [`specs/BPMDetectorSpec.md`](specs/BPMDetectorSpec.md) |
+| App shell spec | [`specs/AppShellSpec.md`](specs/AppShellSpec.md) |
+| Metronome fixtures | [`Resources/Fixtures/README.md`](Resources/Fixtures/README.md) |
+| Contributing | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
+
+---
 
 ## Defaults (v1)
 
-- **Name:** BeatMic · **Bundle:** `com.jacobrozell.beatmic`
-- **Min iOS:** 18.0 · **Locale:** English · **Orientation:** portrait
-- **Telemetry:** off · **Tip jar:** none
+| Setting | Value |
+|---------|-------|
+| **Name** | BeatMic |
+| **Bundle** | `com.jacobrozell.beatmic` |
+| **Min iOS** | 18.0 |
+| **Locale** | English |
+| **Orientation** | Portrait |
+| **Telemetry** | Off |
+| **Tip jar** | None |
